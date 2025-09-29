@@ -290,6 +290,52 @@
             color: var(--text-light);
             opacity: 0.9;
         }
+
+        .popular-searches {
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.9), rgba(26, 26, 26, 0.9));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem auto;
+            max-width: 800px;
+            border: 1px solid var(--dark-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .popular-searches h2 {
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .search-tag {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            color: var(--black);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            border: none;
+        }
+
+        .search-tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
         
         .luxury-footer {
             background: linear-gradient(135deg, var(--black) 0%, #2D2D2D 100%);
@@ -335,6 +381,15 @@
                 flex-direction: column;
                 text-align: center;
             }
+
+            .search-tags {
+                gap: 8px;
+            }
+
+            .search-tag {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
@@ -360,7 +415,7 @@
             <div class="api-config">
                 <h4><i class="fas fa-key"></i> تنظیمات دسترسی پیشرفته</h4>
                 <input type="password" class="api-input" id="apiKey" 
-                       placeholder="کلید API اختصاصی خود را وارد نمایید">
+                       placeholder="کلید DeepSeek API خود را وارد کنید">
             </div>
         </section>
 
@@ -377,6 +432,27 @@
                 <span id="responseTitle">پاسخ تخصصی</span>
             </h2>
             <div class="response-content" id="responseContent"></div>
+        </section>
+
+        <section class="popular-searches">
+            <h2>
+                <i class="fas fa-fire"></i>
+                جستجوهای پرطرفدار
+            </h2>
+            <div class="search-tags">
+                <button class="search-tag" onclick="quickSearch('تاریخ ایران')">تاریخ ایران</button>
+                <button class="search-tag" onclick="quickSearch('علم فیزیک چیست')">علم فیزیک</button>
+                <button class="search-tag" onclick="quickSearch('هوش مصنوعی چگونه کار می کند')">هوش مصنوعی</button>
+                <button class="search-tag" onclick="quickSearch('ادبیات فارسی')">ادبیات فارسی</button>
+                <button class="search-tag" onclick="quickSearch('تکنولوژی بلاکچین')">بلاکچین</button>
+                <button class="search-tag" onclick="quickSearch('فلسفه زندگی')">فلسفه زندگی</button>
+                <button class="search-tag" onclick="quickSearch('روانشناسی انسان')">روانشناسی</button>
+                <button class="search-tag" onclick="quickSearch('تغذیه سالم')">تغذیه سالم</button>
+                <button class="search-tag" onclick="quickSearch('برنامه نویسی پایتون')">پایتون</button>
+                <button class="search-tag" onclick="quickSearch('هنر مدرن')">هنر مدرن</button>
+                <button class="search-tag" onclick="quickSearch('اقتصاد جهانی')">اقتصاد جهانی</button>
+                <button class="search-tag" onclick="quickSearch('محیط زیست')">محیط زیست</button>
+            </div>
         </section>
 
         <section class="features">
@@ -418,6 +494,12 @@
     </footer>
 
     <script>
+        // تابع برای جستجوی سریع
+        function quickSearch(query) {
+            document.getElementById('searchInput').value = query;
+            document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+        }
+
         document.getElementById('searchForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -430,7 +512,7 @@
             }
             
             if (!apiKey) {
-                showError('لطفاً کلید API را وارد نمایید');
+                showError('لطفاً کلید DeepSeek API را وارد نمایید');
                 return;
             }
             
@@ -443,14 +525,14 @@
             hideResponse();
 
             try {
-                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                const response = await fetch('https://api.deepseek.com/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
                         'Authorization': `Bearer ${apiKey}`
                     },
                     body: JSON.stringify({
-                        model: 'gpt-3.5-turbo',
+                        model: 'deepseek-chat',
                         messages: [
                             {
                                 role: 'system',
@@ -461,14 +543,15 @@
                                 content: question
                             }
                         ],
-                        max_tokens: 2000,
-                        temperature: 0.8
+                        max_tokens: 2048,
+                        temperature: 0.7,
+                        stream: false
                     })
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    throw new Error(errorData.error?.message || 'خطا در ارتباط با سرویس هوش مصنوعی');
+                    const errorText = await response.text();
+                    throw new Error('خطا در ارتباط با سرویس هوش مصنوعی');
                 }
 
                 const data = await response.json();
@@ -525,10 +608,12 @@
                 .join('');
         }
 
+        // ذخیره API Key در localStorage
         document.getElementById('apiKey').addEventListener('input', function() {
             localStorage.setItem('fai_api_key', this.value);
         });
 
+        // بازیابی API Key ذخیره شده
         window.addEventListener('load', function() {
             const savedApiKey = localStorage.getItem('fai_api_key');
             if (savedApiKey) {
