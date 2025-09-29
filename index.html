@@ -7,6 +7,632 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&family=Scheherazade+New&display=swap" rel="stylesheet">
     <style>
+        /* استایل‌ها دقیقاً مانند قبل */
+        :root {
+            --gold: #D4AF37;
+            --dark-gold: #B8860B;
+            --light-gold: #F5E6B3;
+            --black: #000000;
+            --dark-bg: #1A1A1A;
+            --light-bg: #2D2D2D;
+            --text-light: #E5E5E5;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Scheherazade New', serif;
+            background: linear-gradient(135deg, var(--black) 0%, var(--dark-bg) 100%);
+            color: var(--text-light);
+            line-height: 1.8;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+        
+        .luxury-header {
+            background: linear-gradient(135deg, var(--black) 0%, #2D2D2D 100%);
+            color: var(--gold);
+            padding: 3rem 0;
+            text-align: center;
+            border-bottom: 3px solid var(--gold);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .luxury-header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+        }
+        
+        .logo {
+            font-family: 'Noto Nastaliq Urdu', serif;
+            font-size: 4rem;
+            margin-bottom: 0.5rem;
+            font-weight: normal;
+            text-shadow: 0 0 30px rgba(212, 175, 55, 0.5);
+            background: linear-gradient(135deg, var(--gold), var(--light-gold));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            letter-spacing: 3px;
+        }
+        
+        .logo-subtitle {
+            font-size: 1.3rem;
+            color: var(--light-gold);
+            margin-bottom: 1rem;
+            letter-spacing: 2px;
+        }
+        
+        .tagline {
+            font-size: 1.1rem;
+            color: var(--text-light);
+            max-width: 600px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .search-section {
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.9), rgba(26, 26, 26, 0.9));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem auto;
+            max-width: 800px;
+            border: 1px solid var(--dark-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            position: relative;
+            backdrop-filter: blur(10px);
+        }
+        
+        .search-section::before {
+            content: "";
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, var(--gold), transparent, var(--dark-gold));
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0.7;
+        }
+        
+        .search-form {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .search-input {
+            flex: 1;
+            padding: 18px 20px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--dark-gold);
+            border-radius: 12px;
+            font-size: 1.1rem;
+            color: var(--text-light);
+            font-family: 'Scheherazade New', serif;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input:focus {
+            outline: none;
+            border-color: var(--gold);
+            box-shadow: 0 0 20px rgba(212, 175, 55, 0.3);
+        }
+        
+        .search-input::placeholder {
+            color: #888;
+        }
+        
+        .search-btn {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            color: var(--black);
+            border: none;
+            border-radius: 12px;
+            padding: 0 30px;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Scheherazade New', serif;
+            font-weight: bold;
+            letter-spacing: 1px;
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .api-config {
+            background: rgba(0, 0, 0, 0.5);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-top: 1.5rem;
+            border: 1px solid rgba(212, 175, 55, 0.3);
+        }
+        
+        .api-config h4 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .api-input {
+            width: 100%;
+            padding: 15px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 1px solid var(--dark-gold);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-family: 'Scheherazade New', serif;
+            font-size: 1rem;
+        }
+        
+        .response-section {
+            display: none;
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.9), rgba(26, 26, 26, 0.9));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 2rem auto;
+            max-width: 800px;
+            border: 1px solid var(--dark-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.5s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .response-title {
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .response-content {
+            line-height: 2;
+            font-size: 1.2rem;
+            color: var(--text-light);
+        }
+        
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 3rem;
+        }
+        
+        .spinner {
+            border: 4px solid rgba(212, 175, 55, 0.3);
+            border-left-color: var(--gold);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 1.5rem;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error {
+            display: none;
+            background: linear-gradient(135deg, rgba(139, 0, 0, 0.8), rgba(178, 34, 34, 0.8));
+            border: 1px solid #8B0000;
+            color: var(--text-light);
+            padding: 1.5rem;
+            border-radius: 12px;
+            margin: 1rem auto;
+            max-width: 800px;
+            text-align: center;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin: 4rem 0;
+        }
+        
+        .feature-card {
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.8), rgba(26, 26, 26, 0.8));
+            border-radius: 16px;
+            padding: 2rem;
+            text-align: center;
+            border: 1px solid var(--dark-gold);
+            transition: all 0.3s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(212, 175, 55, 0.2);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1.5rem;
+            color: var(--gold);
+        }
+        
+        .feature-card h3 {
+            color: var(--gold);
+            margin-bottom: 1rem;
+            font-size: 1.4rem;
+        }
+        
+        .feature-card p {
+            color: var(--text-light);
+            opacity: 0.9;
+        }
+
+        .popular-searches {
+            background: linear-gradient(135deg, rgba(42, 42, 42, 0.9), rgba(26, 26, 26, 0.9));
+            border-radius: 20px;
+            padding: 2.5rem;
+            margin: 3rem auto;
+            max-width: 800px;
+            border: 1px solid var(--dark-gold);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+        }
+
+        .popular-searches h2 {
+            color: var(--gold);
+            text-align: center;
+            margin-bottom: 2rem;
+            font-size: 1.8rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .search-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            justify-content: center;
+        }
+
+        .search-tag {
+            background: linear-gradient(135deg, var(--gold), var(--dark-gold));
+            color: var(--black);
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            border: none;
+        }
+
+        .search-tag:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(212, 175, 55, 0.4);
+        }
+        
+        .luxury-footer {
+            background: linear-gradient(135deg, var(--black) 0%, #2D2D2D 100%);
+            color: var(--text-light);
+            padding: 2.5rem 0;
+            text-align: center;
+            border-top: 2px solid var(--gold);
+            margin-top: 4rem;
+        }
+        
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .designer-credit {
+            color: var(--gold);
+            font-size: 1.1rem;
+            font-weight: bold;
+        }
+        
+        .copyright {
+            opacity: 0.8;
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 3rem;
+            }
+            
+            .search-form {
+                flex-direction: column;
+            }
+            
+            .search-btn {
+                padding: 15px;
+            }
+            
+            .footer-content {
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .search-tags {
+                gap: 8px;
+            }
+
+            .search-tag {
+                padding: 8px 16px;
+                font-size: 0.9rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="luxury-header">
+        <div class="container">
+            <h1 class="logo">FAI</h1>
+            <div class="logo-subtitle">فرهیخته هوش مصنوعی</div>
+            <p class="tagline">مرجع تخصصی پاسخ‌های هوشمند و دانش جامع با طراحی اختصاصی مشکی طلایی</p>
+        </div>
+    </header>
+
+    <div class="container">
+        <section class="search-section">
+            <form class="search-form" id="searchForm">
+                <input type="text" class="search-input" id="searchInput" 
+                       placeholder="سوال یا موضوع مورد نظر خود را وارد کنید..." required>
+                <button type="submit" class="search-btn">
+                    <i class="fas fa-search"></i> درخواست پاسخ
+                </button>
+            </form>
+            
+            <div class="api-config">
+                <h4><i class="fas fa-key"></i> تنظیمات دسترسی پیشرفته</h4>
+                <input type="password" class="api-input" id="apiKey" 
+                       placeholder="کلید OpenAI API خود را وارد کنید"
+                       value="sk-9b1a63bf685949b8bda21b03ca13ce84">
+            </div>
+        </section>
+
+        <div class="error" id="errorMessage"></div>
+
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>در حال پردازش درخواست با هوش مصنوعی پیشرفته...</p>
+        </div>
+
+        <section class="response-section" id="responseSection">
+            <h2 class="response-title">
+                <i class="fas fa-crown"></i>
+                <span id="responseTitle">پاسخ تخصصی</span>
+            </h2>
+            <div class="response-content" id="responseContent"></div>
+        </section>
+
+        <section class="popular-searches">
+            <h2>
+                <i class="fas fa-fire"></i>
+                جستجوهای پرطرفدار
+            </h2>
+            <div class="search-tags">
+                <button class="search-tag" onclick="quickSearch('تاریخ ایران')">تاریخ ایران</button>
+                <button class="search-tag" onclick="quickSearch('علم فیزیک چیست')">علم فیزیک</button>
+                <button class="search-tag" onclick="quickSearch('هوش مصنوعی چگونه کار می کند')">هوش مصنوعی</button>
+                <button class="search-tag" onclick="quickSearch('ادبیات فارسی')">ادبیات فارسی</button>
+                <button class="search-tag" onclick="quickSearch('تکنولوژی بلاکچین')">بلاکچین</button>
+                <button class="search-tag" onclick="quickSearch('فلسفه زندگی')">فلسفه زندگی</button>
+                <button class="search-tag" onclick="quickSearch('روانشناسی انسان')">روانشناسی</button>
+                <button class="search-tag" onclick="quickSearch('تغذیه سالم')">تغذیه سالم</button>
+                <button class="search-tag" onclick="quickSearch('برنامه نویسی پایتون')">پایتون</button>
+                <button class="search-tag" onclick="quickSearch('هنر مدرن')">هنر مدرن</button>
+                <button class="search-tag" onclick="quickSearch('اقتصاد جهانی')">اقتصاد جهانی</button>
+                <button class="search-tag" onclick="quickSearch('محیط زیست')">محیط زیست</button>
+            </div>
+        </section>
+
+        <section class="features">
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-brain"></i>
+                </div>
+                <h3>هوش مصنوعی پیشرفته</h3>
+                <p>استفاده از آخرین تکنولوژی‌های هوش مصنوعی برای ارائه دقیق‌ترین پاسخ‌ها</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-gem"></i>
+                </div>
+                <h3>طراحی اختصاصی</h3>
+                <p>طرحی منحصر به فرد با ترکیب مشکی طلایی برای تجربه‌ای لوکس و متفاوت</p>
+            </div>
+            <div class="feature-card">
+                <div class="feature-icon">
+                    <i class="fas fa-rocket"></i>
+                </div>
+                <h3>پاسخ‌های فوری</h3>
+                <p>دریافت پاسخ‌های جامع و تخصصی در کمترین زمان ممکن</p>
+            </div>
+        </section>
+    </div>
+
+    <footer class="luxury-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="copyright">
+                    <p>FAI - فرهیخته هوش مصنوعی © ۱۴۰۳</p>
+                </div>
+                <div class="designer-credit">
+                    <p>طراح: آقای فرهیخته</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // تابع برای جستجوی سریع
+        function quickSearch(query) {
+            document.getElementById('searchInput').value = query;
+            document.getElementById('searchForm').dispatchEvent(new Event('submit'));
+        }
+
+        document.getElementById('searchForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const question = document.getElementById('searchInput').value.trim();
+            const apiKey = document.getElementById('apiKey').value.trim();
+            
+            if (!question) {
+                showError('لطفاً سوال یا موضوع مورد نظر خود را وارد کنید');
+                return;
+            }
+            
+            if (!apiKey) {
+                showError('لطفاً کلید OpenAI API را وارد نمایید');
+                return;
+            }
+            
+            await getAIResponse(question, apiKey);
+        });
+
+        async function getAIResponse(question, apiKey) {
+            showLoading();
+            hideError();
+            hideResponse();
+
+            try {
+                const response = await fetch('https://api.openai.com/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${apiKey}`
+                    },
+                    body: JSON.stringify({
+                        model: 'gpt-3.5-turbo',
+                        messages: [
+                            {
+                                role: 'system',
+                                content: 'شما FAI (فرهیخته هوش مصنوعی) هستید - یک دستیار بسیار حرفه‌ای و فرهیخته. پاسخ‌های شما باید کامل، دقیق، با کلاس و به زبان فارسی باشد. از اصطلاحات فاخر و محترمانه استفاده کنید.'
+                            },
+                            {
+                                role: 'user',
+                                content: question
+                            }
+                        ],
+                        max_tokens: 2000,
+                        temperature: 0.7
+                    })
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    throw new Error(errorData.error?.message || 'خطا در ارتباط با سرویس هوش مصنوعی');
+                }
+
+                const data = await response.json();
+                const answer = data.choices[0].message.content;
+                
+                showResponse(question, answer);
+                
+            } catch (error) {
+                showError(`خطا: ${error.message}`);
+            } finally {
+                hideLoading();
+            }
+        }
+
+        function showLoading() {
+            document.getElementById('loading').style.display = 'block';
+        }
+
+        function hideLoading() {
+            document.getElementById('loading').style.display = 'none';
+        }
+
+        function showResponse(question, answer) {
+            document.getElementById('responseTitle').textContent = `پاسخ به: "${question}"`;
+            document.getElementById('responseContent').innerHTML = formatAnswer(answer);
+            document.getElementById('responseSection').style.display = 'block';
+            
+            document.getElementById('responseSection').scrollIntoView({ 
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+
+        function hideResponse() {
+            document.getElementById('responseSection').style.display = 'none';
+        }
+
+        function showError(message) {
+            document.getElementById('errorMessage').textContent = message;
+            document.getElementById('errorMessage').style.display = 'block';
+        }
+
+        function hideError() {
+            document.getElementById('errorMessage').style.display = 'none';
+        }
+
+        function formatAnswer(text) {
+            return text
+                .split('\n\n')
+                .map(paragraph => {
+                    if (paragraph.trim() === '') return '<br>';
+                    return `<p>${paragraph}</p>`;
+                })
+                .join('');
+        }
+
+        // ذخیره API Key در localStorage
+        document.getElementById('apiKey').addEventListener('input', function() {
+            localStorage.setItem('fai_api_key', this.value);
+        });
+
+        // بازیابی API Key ذخیره شده
+        window.addEventListener('load', function() {
+            const savedApiKey = localStorage.getItem('fai_api_key');
+            if (savedApiKey) {
+                document.getElementById('apiKey').value = savedApiKey;
+            }
+        });
+    </script>
+</body>
+</html>
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FAI | فرهیخته هوش مصنوعی</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Nastaliq+Urdu&family=Scheherazade+New&display=swap" rel="stylesheet">
+    <style>
         /* همه استایل‌ها مانند قبل */
     </style>
 </head>
